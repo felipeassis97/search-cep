@@ -1,7 +1,7 @@
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 
-class DetailsLocationModel extends DetailsLocationEntity {
-  const DetailsLocationModel(
+class LocationDetailsModel extends LocationDetailsEntity {
+  const LocationDetailsModel(
       {required String cep,
       required String logradouro,
       required String complemento,
@@ -24,8 +24,8 @@ class DetailsLocationModel extends DetailsLocationEntity {
             ddd: ddd,
             siafi: siafi);
 
-  factory DetailsLocationModel.fromJson(Map<String, dynamic> json) =>
-      DetailsLocationModel(
+  factory LocationDetailsModel.fromJson(Map<String, dynamic> json) =>
+      LocationDetailsModel(
         cep: json['cep'],
         logradouro: json['logradouro'],
         complemento: json['complemento'],

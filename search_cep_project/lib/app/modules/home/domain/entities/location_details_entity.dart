@@ -1,7 +1,7 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
 
-class DetailsLocationEntity extends Equatable {
+class LocationDetailsEntity extends Equatable {
   final String cep;
   final String logradouro;
   final String complemento;
@@ -13,7 +13,7 @@ class DetailsLocationEntity extends Equatable {
   final String ddd;
   final String siafi;
 
-  const DetailsLocationEntity(
+  const LocationDetailsEntity(
       {required this.cep,
       required this.logradouro,
       required this.complemento,
