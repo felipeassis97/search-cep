@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:search_cep_project/app/core/errors/failures.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
-import 'package:search_cep_project/app/modules/home/domain/usecase/search_Address_by_cep.dart';
+import 'package:search_cep_project/app/modules/home/domain/usecase/search_address_by_cep.dart';
 part 'home_store.g.dart';
 
 class HomeStore = _HomeStoreBase with _$HomeStore;
