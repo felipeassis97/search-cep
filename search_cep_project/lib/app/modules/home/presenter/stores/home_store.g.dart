@@ -9,39 +9,48 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeStore on _HomeStoreBase, Store {
-  final _$valueAtom = Atom(name: '_HomeStoreBase.value');
+  final _$isLoadingAtom = Atom(name: '_HomeStoreBase.isLoading');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
     });
   }
 
-  final _$_HomeStoreBaseActionController =
-      ActionController(name: '_HomeStoreBase');
+  final _$dataAddressByCepAtom = Atom(name: '_HomeStoreBase.dataAddressByCep');
 
   @override
-  void increment() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-        name: '_HomeStoreBase.increment');
-    try {
-      return super.increment();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
+  LocationDetailsEntity? get dataAddressByCep {
+    _$dataAddressByCepAtom.reportRead();
+    return super.dataAddressByCep;
+  }
+
+  @override
+  set dataAddressByCep(LocationDetailsEntity? value) {
+    _$dataAddressByCepAtom.reportWrite(value, super.dataAddressByCep, () {
+      super.dataAddressByCep = value;
+    });
+  }
+
+  final _$searchCepAsyncAction = AsyncAction('_HomeStoreBase.searchCep');
+
+  @override
+  Future<void> searchCep(String cep) {
+    return _$searchCepAsyncAction.run(() => super.searchCep(cep));
   }
 
   @override
   String toString() {
     return '''
-value: ${value}
+isLoading: ${isLoading},
+dataAddressByCep: ${dataAddressByCep}
     ''';
   }
 }
