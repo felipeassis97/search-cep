@@ -13,10 +13,6 @@ import 'presenter/screens/home_page.dart';
 class HomeModule extends Module {
   @override
   final List<Bind> binds = [
-    //Client
-    Bind.factory((i) => Dio()),
-    Bind.factory((i) => SearchCepClient(client: i<Dio>())),
-
     //Store
     Bind((i) => HomeStore(usecase: i<SearchLocationByCep>())),
 
