@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobx/mobx.dart';
+import 'package:search_cep_project/app/core/utils/app_assets.dart';
 import 'package:search_cep_project/app/modules/home/presenter/stores/home_store.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/buttons_componnets.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/dialog_component.dart';
@@ -91,8 +92,7 @@ class HomePageState extends State<HomePage> {
 
     AlertDialog alert = AlertDialog(
       title: Center(
-        child: Lottie.asset('lib/app/assets/lotties/error_lottie.json',
-            width: 70, height: 70),
+        child: Lottie.asset(AppAssets.errorAnimation, width: 70, height: 70),
       ),
       content: Wrap(
         children: const [

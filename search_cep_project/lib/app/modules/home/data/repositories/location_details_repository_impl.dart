@@ -6,14 +6,14 @@ import 'package:dartz/dartz.dart';
 import 'package:search_cep_project/app/modules/home/domain/repositories/location_details_repository.dart';
 
 class LocationDetailsRepositoryImpl implements LocationDetailsRepository {
-  final LocationDetailsDatasource searchAddressByCepDatasource;
+  final LocationDetailsDatasource datasource;
 
-  LocationDetailsRepositoryImpl({required this.searchAddressByCepDatasource});
+  LocationDetailsRepositoryImpl({required this.datasource});
 
   @override
   Future<Either<Failure, LocationDetailsEntity>> call(String cep) async {
     try {
-      final result = await searchAddressByCepDatasource.call(cep);
+      final result = await datasource.call(cep);
       return Right(result);
     } on ServerExpection {
       return Left(ServerFailure());

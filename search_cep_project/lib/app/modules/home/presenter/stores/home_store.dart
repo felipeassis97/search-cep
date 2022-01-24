@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:search_cep_project/app/core/errors/failures.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/modules/home/domain/usecase/search_address_by_cep.dart';
 part 'home_store.g.dart';
@@ -7,8 +6,8 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
-  final SearchLocationByCep searchCepUsecase;
-  _HomeStoreBase({required this.searchCepUsecase});
+  final SearchLocationByCep usecase;
+  _HomeStoreBase({required this.usecase});
 
   @observable
   bool isLoading = false;
@@ -31,7 +30,7 @@ abstract class _HomeStoreBase with Store {
     requestError = false;
 
     isLoading = true;
-    final result = await searchCepUsecase.call(cep);
+    final result = await usecase.call(cep);
     await loadingDuration();
 
     result.fold(

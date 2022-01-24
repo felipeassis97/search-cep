@@ -5,12 +5,12 @@ import 'package:search_cep_project/app/modules/home/domain/repositories/location
 import 'package:search_cep_project/app/modules/home/domain/usecase/search_address_by_cep.dart';
 
 class SearchAdressByCepUsecaseImpl implements SearchLocationByCep {
-  final LocationDetailsRepository searchAddreesByCepRepository;
+  final LocationDetailsRepository repository;
 
-  SearchAdressByCepUsecaseImpl({required this.searchAddreesByCepRepository});
+  SearchAdressByCepUsecaseImpl({required this.repository});
 
   @override
   Future<Either<Failure, LocationDetailsEntity>> call(String cep) async {
-    return await searchAddreesByCepRepository.call(cep);
+    return await repository.call(cep);
   }
 }

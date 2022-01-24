@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:search_cep_project/app/core/utils/app_assets.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/buttons_componnets.dart';
 
 class DialogComponent {
@@ -18,8 +19,7 @@ class DialogComponent {
 
     AlertDialog alert = AlertDialog(
       title: Center(
-        child: Lottie.asset('lib/app/assets/lotties/error_lottie.json',
-            width: 70, height: 70),
+        child: Lottie.asset(AppAssets.errorAnimation, width: 70, height: 70),
       ),
       content: Wrap(
         children: const [
