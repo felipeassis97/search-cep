@@ -20,24 +20,28 @@ abstract class _HomeStoreBase with Store {
   LocationDetailsEntity? dataAddressByCep;
 
   @action
+  Future<void> loadingDuration() async {
+    await Future.delayed(const Duration(seconds: 3), () {
+      isLoading = false;
+    });
+  }
+
+  @action
   Future<void> searchCep(String cep) async {
     requestError = false;
 
     isLoading = true;
     final result = await searchCepUsecase.call(cep);
-    isLoading = false;
+    await loadingDuration();
 
     result.fold(
-      (failure) {
-        if (failure == ServerFailure()) {
-          requestError = true;
-        }
-        //isLoading = false;
+      (failure) async {
         requestError = true;
       },
       (dataAddress) {
         dataAddressByCep = dataAddress;
       },
     );
+    isLoading = false;
   }
 }

@@ -6,7 +6,7 @@ import 'package:search_cep_project/app/modules/home/data/model/location_details_
 class LocationDetailsDatasourceImpl implements LocationDetailsDatasource {
   @override
   Future<LocationDetailsModel> call(String cep) async {
-    final _client = Dio();
+    final _client = Dio(); //
 
     final response = await _client.get('https://viacep.com.br/ws/$cep/json/');
 
