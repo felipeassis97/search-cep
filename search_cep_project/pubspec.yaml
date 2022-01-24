@@ -21,6 +21,8 @@ dependencies:
   google_fonts: 2.2.0
   dio: 4.0.4
   lottie: ^1.2.1
+  dependencies:
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:

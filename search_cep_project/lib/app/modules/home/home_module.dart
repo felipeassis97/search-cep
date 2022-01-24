@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:search_cep_project/app/core/client/search_cep_client.dart';
 import 'package:search_cep_project/app/modules/home/presenter/stores/home_store.dart';
