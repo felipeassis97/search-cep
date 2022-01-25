@@ -14,10 +14,14 @@ class PrimaryButtonComponent extends StatelessWidget {
       child: Text(labelButton),
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          minimumSize: const Size(200, 50),
           primary: AppColors.primaryColor,
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
           textStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
     );
   }
 }

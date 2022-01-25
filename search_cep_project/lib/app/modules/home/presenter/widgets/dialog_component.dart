@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:search_cep_project/app/core/utils/app_assets.dart';
-import 'package:search_cep_project/app/modules/home/presenter/widgets/buttons_componnets.dart';
+import 'package:search_cep_project/app/core/utils/app_colors.dart';
 
 class DialogComponent {
   final BuildContext context;
@@ -14,8 +14,15 @@ class DialogComponent {
       required this.onPressed});
 
   showAlertDialog() {
-    Widget okButton =
-        PrimaryButtonComponent(labelButton: labelButton, onPressed: onPressed);
+    Widget okButton = TextButton(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            labelButton,
+            style: const TextStyle(fontSize: 16, color: AppColors.primaryColor),
+          ),
+        ),
+        onPressed: onPressed);
 
     AlertDialog alert = AlertDialog(
       title: Center(

@@ -41,35 +41,63 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(title: 'Search Cep'), body: _body());
+      appBar: const CustomAppBar(
+        title: 'Search Cep',
+        centerTitle: true,
+      ),
+      body: Observer(builder: (context) {
+        return store.isLoading
+            ? const CustomProgressIndicator()
+            : Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [_textFieldSearch(), _listItems()],
+                      ),
+                    ),
+                  ),
+                  _buttonSubmit()
+                ],
+              );
+      }),
+    );
   }
 
-  Widget _body() {
-    return Observer(builder: (context) {
-      return store.isLoading
-          ? const CustomProgressIndicator()
-          : Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: _textFieldSearch(),
-                    ),
-                    store.dataAddressByCep != null
-                        ? card(store.dataAddressByCep!.logradouro,
-                            store.dataAddressByCep!.localidade)
-                        : _emptyState(),
-                    PrimaryButtonComponent(
-                        labelButton: 'Buscar',
-                        onPressed: () async {
-                          await store.searchCep(_inpuCep.text);
-                        })
-                  ],
-                ),
-              ),
-            );
-    });
+  Widget _buttonSubmit() {
+    return Container(
+      color: Colors.white,
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: PrimaryButtonComponent(
+            labelButton: 'Buscar',
+            onPressed: () async {
+              await store.searchCep(_inpuCep.text);
+            }),
+      ),
+    );
+  }
+
+  Widget _listItems() {
+    return store.dataAddressByCep != null
+        ? ListView.builder(
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            primary: false,
+            itemCount: 6,
+            itemBuilder: (context, i) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: _card('Porto Alegre', 'RS'),
+                  ),
+                ))
+        : _emptyState();
   }
 
   Widget _textFieldSearch() {
@@ -77,6 +105,9 @@ class HomePageState extends State<HomePage> {
       controller: _inpuCep,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.place),
+        suffixIcon: InkWell(
+            onTap: () => store.dataAddressByCep = null,
+            child: const Icon(Icons.clear)),
         focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.primaryColor),
             borderRadius: BorderRadius.circular(20)),
@@ -113,57 +144,62 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget card(String city, String state) {
-    return SizedBox(
-      width: 300,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        color: AppColors.neutralColorHightPure,
-        elevation: 10,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: SvgPicture.asset(
-                AppAssets.directionsIllustration,
-                height: 70,
-                width: 70,
-              ),
-              title: Text(city, style: TextStyle(color: Colors.black)),
-              subtitle: Text(state, style: TextStyle(color: Colors.black)),
+  Widget _card(String city, String state) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      color: AppColors.neutralColorHightPure,
+      elevation: 10,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.directionsIllustration,
+              height: 80,
+              width: 80,
             ),
-            ButtonTheme(
-              child: ButtonBar(
-                children: <Widget>[
-                  TextButton(
-                    child: const Text('Delete',
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+            title: Text(city, style: const TextStyle(color: Colors.black)),
+            subtitle: Text(state, style: const TextStyle(color: Colors.black)),
+          ),
+          ButtonTheme(
+            child: ButtonBar(
+              children: <Widget>[
+                TextButton(
+                  child: const Text('Delete',
+                      style: TextStyle(color: Colors.black)),
+                  onPressed: () {},
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _emptyState() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(
-          AppAssets.addressIllustration,
-          height: 200,
-          width: 200,
+        Padding(
+          padding: const EdgeInsets.only(top: 64),
+          child: SvgPicture.asset(
+            AppAssets.addressIllustration,
+            height: 200,
+            width: 200,
+          ),
         ),
         const Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(32.0),
           child: Text(
             "Voce ainda não fez uma busca",
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
           ),
         )
       ],
