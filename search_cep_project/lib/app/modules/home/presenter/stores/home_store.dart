@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:search_cep_project/app/core/services/address_preferences_service.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/modules/home/domain/usecase/search_address_by_cep.dart';
 part 'home_store.g.dart';
@@ -17,6 +18,12 @@ abstract class _HomeStoreBase with Store {
 
   @observable
   LocationDetailsEntity? dataAddressByCep;
+
+  @observable
+  LocationDetailsEntity? dataAddressShared;
+
+  @observable
+  AddressPreferencesService? test;
 
   @action
   Future<void> loadingDuration() async {
@@ -37,8 +44,10 @@ abstract class _HomeStoreBase with Store {
       (failure) async {
         requestError = true;
       },
-      (dataAddress) {
+      (dataAddress) async {
         dataAddressByCep = dataAddress;
+        // dataAddressShared =
+        //     await AddressPreferencesService().getUserInformation();
       },
     );
     isLoading = false;

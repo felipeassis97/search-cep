@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobx/mobx.dart';
+import 'package:search_cep_project/app/core/services/address_preferences_service.dart';
 import 'package:search_cep_project/app/core/utils/app_assets.dart';
 import 'package:search_cep_project/app/core/utils/app_colors.dart';
+import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/modules/home/presenter/stores/home_store.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/buttons_componnets.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/dialog_component.dart';
@@ -77,6 +79,11 @@ class HomePageState extends State<HomePage> {
             labelButton: 'Buscar',
             onPressed: () async {
               await store.searchCep(_inpuCep.text);
+
+              // final result =
+              //     await AddressPreferencesService().getUserInformation();
+
+              //  print("aaaaaaa: $result");
             }),
       ),
     );
@@ -90,13 +97,22 @@ class HomePageState extends State<HomePage> {
             shrinkWrap: true,
             primary: false,
             itemCount: 6,
-            itemBuilder: (context, i) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: _card('Porto Alegre', 'RS'),
-                  ),
-                ))
+            itemBuilder: (context, i) {
+              final item = i;
+              return Dismissible(
+                background: slideLeftBackground(),
+                secondaryBackground: null,
+                key: Key(item.toString()),
+                onDismissed: (DismissDirection direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                  } else {}
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: _card(store.dataAddressByCep),
+                ),
+              );
+            })
         : _emptyState();
   }
 
@@ -144,7 +160,28 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _card(String city, String state) {
+  Widget slideLeftBackground() {
+    return Container(
+      color: AppColors.primaryColor,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const <Widget>[
+            Icon(Icons.delete, color: Colors.white),
+            SizedBox(width: 8),
+            Text("Delete",
+                style: TextStyle(
+                    color: AppColors.neutralColorHightPure,
+                    fontWeight: FontWeight.w700)),
+            SizedBox(width: 20),
+          ],
+        ),
+        alignment: Alignment.centerRight,
+      ),
+    );
+  }
+
+  Widget _card(LocationDetailsEntity? dataAddress) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -159,19 +196,53 @@ class HomePageState extends State<HomePage> {
           ListTile(
             leading: SvgPicture.asset(
               AppAssets.directionsIllustration,
-              height: 80,
-              width: 80,
+              height: 85,
+              width: 85,
             ),
-            title: Text(city, style: const TextStyle(color: Colors.black)),
-            subtitle: Text(state, style: const TextStyle(color: Colors.black)),
-          ),
-          ButtonTheme(
-            child: ButtonBar(
-              children: <Widget>[
-                TextButton(
-                  child: const Text('Delete',
-                      style: TextStyle(color: Colors.black)),
-                  onPressed: () {},
+            title: Row(
+              children: [
+                const Icon(Icons.location_city_outlined,
+                    color: AppColors.secondaryColorLight),
+                const Padding(padding: EdgeInsets.only(left: 8)),
+                Text(dataAddress!.cep,
+                    style: Theme.of(context).textTheme.headline6),
+              ],
+            ),
+            subtitle: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.streetview_outlined,
+                        color: AppColors.secondaryColorLight),
+                    const Padding(padding: EdgeInsets.only(left: 8)),
+                    Text(dataAddress.logradouro,
+                        style: Theme.of(context).textTheme.subtitle1),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.location_city_outlined,
+                        color: AppColors.secondaryColorLight),
+                    const Padding(padding: EdgeInsets.only(left: 8)),
+                    Text(dataAddress.bairro,
+                        style: Theme.of(context).textTheme.subtitle1),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.outlined_flag,
+                        color: AppColors.secondaryColorLight),
+                    const Padding(padding: EdgeInsets.only(left: 8)),
+                    Row(
+                      children: [
+                        Text(dataAddress.localidade,
+                            style: Theme.of(context).textTheme.subtitle1),
+                        const Text(", "),
+                        Text(dataAddress.uf,
+                            style: Theme.of(context).textTheme.subtitle1),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),

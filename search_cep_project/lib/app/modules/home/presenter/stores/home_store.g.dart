@@ -54,6 +54,37 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  final _$dataAddressSharedAtom =
+      Atom(name: '_HomeStoreBase.dataAddressShared');
+
+  @override
+  LocationDetailsEntity? get dataAddressShared {
+    _$dataAddressSharedAtom.reportRead();
+    return super.dataAddressShared;
+  }
+
+  @override
+  set dataAddressShared(LocationDetailsEntity? value) {
+    _$dataAddressSharedAtom.reportWrite(value, super.dataAddressShared, () {
+      super.dataAddressShared = value;
+    });
+  }
+
+  final _$testAtom = Atom(name: '_HomeStoreBase.test');
+
+  @override
+  AddressPreferencesService? get test {
+    _$testAtom.reportRead();
+    return super.test;
+  }
+
+  @override
+  set test(AddressPreferencesService? value) {
+    _$testAtom.reportWrite(value, super.test, () {
+      super.test = value;
+    });
+  }
+
   final _$loadingDurationAsyncAction =
       AsyncAction('_HomeStoreBase.loadingDuration');
 
@@ -74,7 +105,9 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     return '''
 isLoading: ${isLoading},
 requestError: ${requestError},
-dataAddressByCep: ${dataAddressByCep}
+dataAddressByCep: ${dataAddressByCep},
+dataAddressShared: ${dataAddressShared},
+test: ${test}
     ''';
   }
 }

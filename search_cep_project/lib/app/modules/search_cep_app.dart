@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:search_cep_project/app/core/utils/app_colors.dart';
+import 'package:search_cep_project/app/theme/custom_text_theme.dart';
 
 class SearchCepApp extends StatelessWidget {
   const SearchCepApp({Key? key}) : super(key: key);
@@ -10,13 +11,9 @@ class SearchCepApp extends StatelessWidget {
     return MaterialApp(
       title: 'Busca cep',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        backgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.archivoTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
+          primaryColor: AppColors.primaryColor,
+          scaffoldBackgroundColor: AppColors.neutralColorHightPure,
+          textTheme: CustomTextTheme.textTheme),
       debugShowCheckedModeBanner: false,
     ).modular();
   }

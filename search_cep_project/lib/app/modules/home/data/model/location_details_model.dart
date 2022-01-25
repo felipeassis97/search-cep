@@ -37,4 +37,19 @@ class LocationDetailsModel extends LocationDetailsEntity {
         ddd: json['ddd'],
         siafi: json['siafi'],
       );
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cep'] = cep;
+    data['logradouro'] = logradouro;
+    data['complemento'] = complemento;
+    data['bairro'] = bairro;
+    data['localidade'] = localidade;
+    data['uf'] = uf;
+    data['ibge'] = ibge;
+    data['gia'] = gia;
+    data['ddd'] = ddd;
+    data['siafi'] = siafi;
+    return data;
+  }
 }
