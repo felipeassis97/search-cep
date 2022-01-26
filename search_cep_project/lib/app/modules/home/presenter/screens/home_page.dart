@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobx/mobx.dart';
-import 'package:search_cep_project/app/core/services/address_preferences_service.dart';
 import 'package:search_cep_project/app/core/utils/app_assets.dart';
 import 'package:search_cep_project/app/core/utils/app_colors.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
@@ -58,7 +57,19 @@ class HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(16.0),
                       child: ListView(
                         scrollDirection: Axis.vertical,
-                        children: [_textFieldSearch(), _listItems()],
+                        children: [
+                          _textFieldSearch(),
+                          store.dataAddressByCep != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: _card(store.dataAddressByCep),
+                                )
+                              : _emptyState(),
+                          store.dataAddressByCep != null
+                              ? _text()
+                              : Container(),
+                          _listItems()
+                        ],
                       ),
                     ),
                   ),
@@ -84,8 +95,23 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _text() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
+      child: Row(
+        children: const [
+          Text("Favoritos",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          SizedBox(width: 8),
+          Icon(Icons.star_border_outlined, color: AppColors.primaryColor)
+        ],
+      ),
+    );
+  }
+
   Widget _listItems() {
-    return store.dataAddressByCep != null
+    return store.dataAddressShared.isNotEmpty
         ? ListView.builder(
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
@@ -256,8 +282,8 @@ class HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(top: 64),
           child: SvgPicture.asset(
             AppAssets.addressIllustration,
-            height: 200,
-            width: 200,
+            height: 80,
+            width: 80,
           ),
         ),
         const Padding(
@@ -281,8 +307,8 @@ class HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(top: 64),
           child: SvgPicture.asset(
             AppAssets.favoriteIllustration,
-            height: 200,
-            width: 200,
+            height: 80,
+            width: 80,
           ),
         ),
         const Padding(
