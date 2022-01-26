@@ -1,20 +1,16 @@
 import 'package:mobx/mobx.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/modules/home/domain/usecase/search_address/search_address_by_cep.dart';
-import 'package:search_cep_project/app/modules/home/domain/usecase/shared_preferences/get_address_shared.dart';
-import 'package:search_cep_project/app/modules/home/domain/usecase/shared_preferences/set_address_shared.dart';
+import 'package:search_cep_project/app/modules/home/domain/usecase/shared_preferences/shared_usecase.dart';
 part 'home_store.g.dart';
 
 class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
-  final SearchLocationByCep usecase;
-  final SetAddressSharedPreferences usecaseSetSharedPreferences;
-  final GetAddressSharedPreferences usecaseGetSharedPreferences;
+  final SearchLocationByCep usecaseSearchCep;
+  final SharedPreferencesUsecase usecaseSharedPreferences;
   _HomeStoreBase(
-      {required this.usecase,
-      required this.usecaseSetSharedPreferences,
-      required this.usecaseGetSharedPreferences});
+      {required this.usecaseSearchCep, required this.usecaseSharedPreferences});
 
   @observable
   bool isLoading = false;
@@ -39,7 +35,7 @@ abstract class _HomeStoreBase with Store {
   Future<void> searchCep(String cep) async {
     requestError = false;
     isLoading = true;
-    final result = await usecase.call(cep);
+    final result = await usecaseSearchCep.call(cep);
     await loadingDuration();
     result.fold(
       (failure) async {
@@ -57,7 +53,8 @@ abstract class _HomeStoreBase with Store {
   Future<void> setSharedPreferences(LocationDetailsEntity dataAddress) async {
     requestError = false;
     isLoading = true;
-    final result = await usecaseSetSharedPreferences.call(dataAddress);
+    final result =
+        await usecaseSharedPreferences.setDataSharedPreferences(dataAddress);
     await loadingDuration();
     result.fold(
       (failure) async {
@@ -74,7 +71,7 @@ abstract class _HomeStoreBase with Store {
   Future<void> getSharedPreferences() async {
     requestError = false;
     isLoading = true;
-    final result = await usecaseGetSharedPreferences.call();
+    final result = await usecaseSharedPreferences.getDataSharedPreferences();
     await loadingDuration();
     result.fold(
       (failure) async {
