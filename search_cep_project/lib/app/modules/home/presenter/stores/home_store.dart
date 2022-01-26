@@ -43,7 +43,6 @@ abstract class _HomeStoreBase with Store {
       },
       (dataAddress) async {
         dataAddressByCep = dataAddress;
-        await setSharedPreferences(dataAddress);
       },
     );
     isLoading = false;
@@ -51,36 +50,27 @@ abstract class _HomeStoreBase with Store {
 
   @action
   Future<void> setSharedPreferences(LocationDetailsEntity dataAddress) async {
-    requestError = false;
-    isLoading = true;
     final result =
         await usecaseSharedPreferences.setDataSharedPreferences(dataAddress);
-    await loadingDuration();
+
     result.fold(
       (failure) async {
         requestError = true;
       },
-      (_) {
-        print("Success");
-      },
+      (_) {},
     );
     isLoading = false;
   }
 
   @action
   Future<void> getSharedPreferences() async {
-    requestError = false;
-    isLoading = true;
     final result = await usecaseSharedPreferences.getDataSharedPreferences();
-    await loadingDuration();
+
     result.fold(
       (failure) async {
         requestError = true;
       },
-      (addressShared) async {
-        dataAddressShared.add(addressShared);
-        print("GET: $dataAddressShared");
-      },
+      (addressShared) async {},
     );
     isLoading = false;
   }

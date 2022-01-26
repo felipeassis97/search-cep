@@ -28,6 +28,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    store.getSharedPreferences();
 
     _reactionCep = reaction(
         (_) => store.requestError,
@@ -62,7 +63,38 @@ class HomePageState extends State<HomePage> {
                           store.dataAddressByCep != null
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 16.0),
-                                  child: _card(store.dataAddressByCep),
+                                  child: Column(
+                                    children: [
+                                      _card(store.dataAddressByCep),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            if (store.dataAddressByCep !=
+                                                null) {
+                                              final result =
+                                                  store.dataAddressByCep;
+                                              await store.setSharedPreferences(
+                                                  result!);
+                                            }
+                                          },
+                                          child: Row(
+                                            children: const [
+                                              Text("Adicionar aos favoritos",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                              SizedBox(width: 8),
+                                              Icon(Icons.add,
+                                                  color: AppColors.primaryColor)
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 )
                               : _emptyState(),
                           store.dataAddressByCep != null
