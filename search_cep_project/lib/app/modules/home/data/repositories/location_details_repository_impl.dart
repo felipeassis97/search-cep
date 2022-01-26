@@ -1,5 +1,5 @@
 import 'package:search_cep_project/app/core/errors/exceptions.dart';
-import 'package:search_cep_project/app/modules/home/data/datasource/location_details_datasource.dart';
+import 'package:search_cep_project/app/modules/home/data/datasource/search_cep/location_details_datasource.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';

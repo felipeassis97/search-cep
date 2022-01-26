@@ -58,30 +58,15 @@ mixin _$HomeStore on _HomeStoreBase, Store {
       Atom(name: '_HomeStoreBase.dataAddressShared');
 
   @override
-  LocationDetailsEntity? get dataAddressShared {
+  List<LocationDetailsEntity> get dataAddressShared {
     _$dataAddressSharedAtom.reportRead();
     return super.dataAddressShared;
   }
 
   @override
-  set dataAddressShared(LocationDetailsEntity? value) {
+  set dataAddressShared(List<LocationDetailsEntity> value) {
     _$dataAddressSharedAtom.reportWrite(value, super.dataAddressShared, () {
       super.dataAddressShared = value;
-    });
-  }
-
-  final _$testAtom = Atom(name: '_HomeStoreBase.test');
-
-  @override
-  AddressPreferencesService? get test {
-    _$testAtom.reportRead();
-    return super.test;
-  }
-
-  @override
-  set test(AddressPreferencesService? value) {
-    _$testAtom.reportWrite(value, super.test, () {
-      super.test = value;
     });
   }
 
@@ -100,14 +85,31 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     return _$searchCepAsyncAction.run(() => super.searchCep(cep));
   }
 
+  final _$setSharedPreferencesAsyncAction =
+      AsyncAction('_HomeStoreBase.setSharedPreferences');
+
+  @override
+  Future<void> setSharedPreferences(LocationDetailsEntity dataAddress) {
+    return _$setSharedPreferencesAsyncAction
+        .run(() => super.setSharedPreferences(dataAddress));
+  }
+
+  final _$getSharedPreferencesAsyncAction =
+      AsyncAction('_HomeStoreBase.getSharedPreferences');
+
+  @override
+  Future<void> getSharedPreferences() {
+    return _$getSharedPreferencesAsyncAction
+        .run(() => super.getSharedPreferences());
+  }
+
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
 requestError: ${requestError},
 dataAddressByCep: ${dataAddressByCep},
-dataAddressShared: ${dataAddressShared},
-test: ${test}
+dataAddressShared: ${dataAddressShared}
     ''';
   }
 }

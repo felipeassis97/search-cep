@@ -62,7 +62,7 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  _buttonSubmit()
+                  _buttonSubmit(),
                 ],
               );
       }),
@@ -79,11 +79,6 @@ class HomePageState extends State<HomePage> {
             labelButton: 'Buscar',
             onPressed: () async {
               await store.searchCep(_inpuCep.text);
-
-              // final result =
-              //     await AddressPreferencesService().getUserInformation();
-
-              //  print("aaaaaaa: $result");
             }),
       ),
     );
@@ -96,7 +91,7 @@ class HomePageState extends State<HomePage> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             primary: false,
-            itemCount: 6,
+            itemCount: store.dataAddressShared.length,
             itemBuilder: (context, i) {
               final item = i;
               return Dismissible(
@@ -109,11 +104,11 @@ class HomePageState extends State<HomePage> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                  child: _card(store.dataAddressByCep),
+                  child: _card(store.dataAddressShared[i]),
                 ),
               );
             })
-        : _emptyState();
+        : _emptyStateFavorites();
   }
 
   Widget _textFieldSearch() {
@@ -269,6 +264,31 @@ class HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(32.0),
           child: Text(
             "Voce ainda não fez uma busca",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _emptyStateFavorites() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 64),
+          child: SvgPicture.asset(
+            AppAssets.favoriteIllustration,
+            height: 200,
+            width: 200,
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(32.0),
+          child: Text(
+            "Você ainda não tem nenhum favorito :(",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),

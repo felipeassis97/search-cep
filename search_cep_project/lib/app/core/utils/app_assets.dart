@@ -9,4 +9,6 @@ class AppAssets {
       'lib/app/assets/images/address_illustration.svg';
   static const directionsIllustration =
       'lib/app/assets/images/directions_illustration.svg';
+  static const favoriteIllustration =
+      'lib/app/assets/images/favorite_illustration.svg';
 }
