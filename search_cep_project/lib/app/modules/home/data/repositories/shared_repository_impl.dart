@@ -10,7 +10,7 @@ class SharedPreferencesRepositoryImpl implements SharedPreferencesRepository {
 
   SharedPreferencesRepositoryImpl({required this.datasource});
   @override
-  Future<Either<Failure, LocationDetailsEntity>>
+  Future<Either<Failure, List<LocationDetailsEntity>>>
       getDataSharedPreferences() async {
     try {
       final result = await datasource.getDataSharedPreferences();
@@ -24,7 +24,7 @@ class SharedPreferencesRepositoryImpl implements SharedPreferencesRepository {
 
   @override
   Future<Either<Failure, void>> setDataSharedPreferences(
-      LocationDetailsEntity addressEntity) async {
+      List<LocationDetailsEntity> addressEntity) async {
     try {
       await datasource.setDataSharedPreferences(addressEntity);
       return const Right(null);

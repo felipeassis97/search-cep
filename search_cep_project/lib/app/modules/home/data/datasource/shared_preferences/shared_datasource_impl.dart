@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:search_cep_project/app/core/errors/exceptions.dart';
 import 'package:search_cep_project/app/modules/home/data/datasource/shared_preferences/shared_datasource.dart';
 import 'package:search_cep_project/app/modules/home/data/model/location_details_model.dart';
@@ -8,13 +6,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
   @override
-  Future<LocationDetailsModel> getDataSharedPreferences() async {
+  Future<List<LocationDetailsModel>> getDataSharedPreferences() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final addressData = (prefs.getString('addressInformation') ?? "");
-      final addressModel = jsonDecode(addressData);
-      final addressEntity = LocationDetailsModel.fromJson(addressModel);
-      return addressEntity;
+      final addressData = (prefs.getStringList('addressInformation') ?? []);
+
+      final list = List.from(addressData);
+      return list
+          .map<LocationDetailsModel>(
+              (addressModel) => LocationDetailsModel.fromJson(addressModel))
+          .toList();
+
+      // final addressModel = jsonDecode(addressData);
+      // final addressEntity = LocationDetailsModel.fromJson(addressModel);
+      // return addressEntity;
+
     } on Exception {
       throw SharedException();
     }
@@ -22,11 +28,17 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
 
   @override
   Future<void> setDataSharedPreferences(
-      LocationDetailsEntity addressShared) async {
+      List<LocationDetailsEntity> addressShared) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final addressData = jsonEncode(addressShared);
-      await prefs.setString('addressInformation', addressData);
+      //final addressData = jsonEncode(addressShared);
+      List<String> list = List.from(addressShared);
+      //  list
+      //     .map<LocationDetailsModel>(
+      //         (addressModel) => LocationDetailsModel.fromJson(addressShared))
+      //     .toList();
+
+      await prefs.setStringList('addressInformation', list);
     } on Exception {
       throw SharedException();
     }

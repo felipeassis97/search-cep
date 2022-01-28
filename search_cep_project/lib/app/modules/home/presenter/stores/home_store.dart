@@ -22,7 +22,10 @@ abstract class _HomeStoreBase with Store {
   LocationDetailsEntity? dataAddressByCep;
 
   @observable
-  List<LocationDetailsEntity> dataAddressShared = [];
+  List<LocationDetailsEntity> setDataAddressShared = [];
+
+  @observable
+  List<LocationDetailsEntity> getDataAddressShared = [];
 
   @action
   Future<void> loadingDuration() async {
@@ -49,7 +52,8 @@ abstract class _HomeStoreBase with Store {
   }
 
   @action
-  Future<void> setSharedPreferences(LocationDetailsEntity dataAddress) async {
+  Future<void> setSharedPreferences(
+      List<LocationDetailsEntity> dataAddress) async {
     final result =
         await usecaseSharedPreferences.setDataSharedPreferences(dataAddress);
 
@@ -70,7 +74,9 @@ abstract class _HomeStoreBase with Store {
       (failure) async {
         requestError = true;
       },
-      (addressShared) async {},
+      (addressShared) async {
+        getDataAddressShared = addressShared;
+      },
     );
     isLoading = false;
   }

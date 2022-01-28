@@ -28,6 +28,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     store.getSharedPreferences();
 
     _reactionCep = reaction(
@@ -74,8 +75,15 @@ class HomePageState extends State<HomePage> {
                                                 null) {
                                               final result =
                                                   store.dataAddressByCep;
+
+                                              store.setDataAddressShared
+                                                  .add(result!);
+
                                               await store.setSharedPreferences(
-                                                  result!);
+                                                  store.setDataAddressShared);
+
+                                              await store
+                                                  .getSharedPreferences();
                                             }
                                           },
                                           child: Row(
@@ -143,13 +151,13 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _listItems() {
-    return store.dataAddressShared.isNotEmpty
+    return store.getDataAddressShared.isNotEmpty
         ? ListView.builder(
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             primary: false,
-            itemCount: store.dataAddressShared.length,
+            itemCount: store.getDataAddressShared.length,
             itemBuilder: (context, i) {
               final item = i;
               return Dismissible(
@@ -162,7 +170,7 @@ class HomePageState extends State<HomePage> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                  child: _card(store.dataAddressShared[i]),
+                  child: _card(store.getDataAddressShared[i]),
                 ),
               );
             })

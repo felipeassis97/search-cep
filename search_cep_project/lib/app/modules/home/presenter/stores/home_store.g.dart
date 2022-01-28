@@ -54,19 +54,37 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
-  final _$dataAddressSharedAtom =
-      Atom(name: '_HomeStoreBase.dataAddressShared');
+  final _$setDataAddressSharedAtom =
+      Atom(name: '_HomeStoreBase.setDataAddressShared');
 
   @override
-  List<LocationDetailsEntity> get dataAddressShared {
-    _$dataAddressSharedAtom.reportRead();
-    return super.dataAddressShared;
+  List<LocationDetailsEntity> get setDataAddressShared {
+    _$setDataAddressSharedAtom.reportRead();
+    return super.setDataAddressShared;
   }
 
   @override
-  set dataAddressShared(List<LocationDetailsEntity> value) {
-    _$dataAddressSharedAtom.reportWrite(value, super.dataAddressShared, () {
-      super.dataAddressShared = value;
+  set setDataAddressShared(List<LocationDetailsEntity> value) {
+    _$setDataAddressSharedAtom.reportWrite(value, super.setDataAddressShared,
+        () {
+      super.setDataAddressShared = value;
+    });
+  }
+
+  final _$getDataAddressSharedAtom =
+      Atom(name: '_HomeStoreBase.getDataAddressShared');
+
+  @override
+  List<LocationDetailsEntity> get getDataAddressShared {
+    _$getDataAddressSharedAtom.reportRead();
+    return super.getDataAddressShared;
+  }
+
+  @override
+  set getDataAddressShared(List<LocationDetailsEntity> value) {
+    _$getDataAddressSharedAtom.reportWrite(value, super.getDataAddressShared,
+        () {
+      super.getDataAddressShared = value;
     });
   }
 
@@ -89,7 +107,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
       AsyncAction('_HomeStoreBase.setSharedPreferences');
 
   @override
-  Future<void> setSharedPreferences(LocationDetailsEntity dataAddress) {
+  Future<void> setSharedPreferences(List<LocationDetailsEntity> dataAddress) {
     return _$setSharedPreferencesAsyncAction
         .run(() => super.setSharedPreferences(dataAddress));
   }
@@ -109,7 +127,8 @@ mixin _$HomeStore on _HomeStoreBase, Store {
 isLoading: ${isLoading},
 requestError: ${requestError},
 dataAddressByCep: ${dataAddressByCep},
-dataAddressShared: ${dataAddressShared}
+setDataAddressShared: ${setDataAddressShared},
+getDataAddressShared: ${getDataAddressShared}
     ''';
   }
 }

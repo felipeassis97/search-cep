@@ -9,14 +9,14 @@ class SharedPreferencesUsecaseImpl implements SharedPreferencesUsecase {
 
   SharedPreferencesUsecaseImpl({required this.repository});
   @override
-  Future<Either<Failure, LocationDetailsEntity>>
+  Future<Either<Failure, List<LocationDetailsEntity>>>
       getDataSharedPreferences() async {
     return await repository.getDataSharedPreferences();
   }
 
   @override
   Future<Either<Failure, void>> setDataSharedPreferences(
-      LocationDetailsEntity addressEntity) async {
+      List<LocationDetailsEntity> addressEntity) async {
     return await repository.setDataSharedPreferences(addressEntity);
   }
 
