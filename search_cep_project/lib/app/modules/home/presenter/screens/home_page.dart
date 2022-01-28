@@ -129,7 +129,7 @@ class HomePageState extends State<HomePage> {
 
   Widget _text() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 32, 16, 8),
       child: Row(
         children: const [
           Text("Favoritos",

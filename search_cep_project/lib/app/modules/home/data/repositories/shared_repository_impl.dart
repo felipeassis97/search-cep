@@ -18,7 +18,7 @@ class SharedPreferencesRepositoryImpl implements SharedPreferencesRepository {
     } on ServerExpection {
       return Left(ServerFailure());
     } on Exception {
-      return Left(ServerFailure());
+      return Left(SharedFailure());
     }
   }
 
@@ -29,7 +29,7 @@ class SharedPreferencesRepositoryImpl implements SharedPreferencesRepository {
       await datasource.setDataSharedPreferences(addressEntity);
       return const Right(null);
     } catch (_) {
-      return Left(ServerFailure());
+      return Left(SharedFailure());
     }
   }
 
@@ -39,7 +39,7 @@ class SharedPreferencesRepositoryImpl implements SharedPreferencesRepository {
       await datasource.clearDataSharedPreferences();
       return const Right(null);
     } catch (_) {
-      return Left(ServerFailure());
+      return Left(SharedFailure());
     }
   }
 }

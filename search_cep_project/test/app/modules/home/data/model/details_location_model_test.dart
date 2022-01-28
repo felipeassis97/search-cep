@@ -4,10 +4,6 @@ import 'package:search_cep_project/app/modules/home/data/model/location_details_
 import '../../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  setUpAll(() {});
-
-  tearDownAll(() {});
-
   const detailsLocationModel = LocationDetailsModel(
       cep: "90010-220",
       logradouro: "Avenida Senador Salgado Filho",

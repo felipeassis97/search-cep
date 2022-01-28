@@ -11,9 +11,9 @@ class LocationDetailsRepositoryImpl implements LocationDetailsRepository {
   LocationDetailsRepositoryImpl({required this.datasource});
 
   @override
-  Future<Either<Failure, LocationDetailsEntity>> call(String cep) async {
+  Future<Either<Failure, LocationDetailsEntity>> getLocation(String cep) async {
     try {
-      final result = await datasource.call(cep);
+      final result = await datasource.getDetailsLocation(cep);
       return Right(result);
     } on ServerExpection {
       return Left(ServerFailure());

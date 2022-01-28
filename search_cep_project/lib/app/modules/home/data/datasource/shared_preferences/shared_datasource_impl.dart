@@ -16,7 +16,7 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
       final addressEntity = LocationDetailsModel.fromJson(addressModel);
       return addressEntity;
     } on Exception {
-      throw ServerExpection();
+      throw SharedException();
     }
   }
 
@@ -28,7 +28,7 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
       final addressData = jsonEncode(addressShared);
       await prefs.setString('addressInformation', addressData);
     } on Exception {
-      throw ServerExpection();
+      throw SharedException();
     }
   }
 
@@ -38,7 +38,7 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.clear();
     } on Exception {
-      throw ServerExpection();
+      throw SharedException();
     }
   }
 }

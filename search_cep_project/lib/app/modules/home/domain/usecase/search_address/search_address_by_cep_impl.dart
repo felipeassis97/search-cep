@@ -11,6 +11,6 @@ class SearchAdressByCepUsecaseImpl implements SearchLocationByCep {
 
   @override
   Future<Either<Failure, LocationDetailsEntity>> call(String cep) async {
-    return await repository.call(cep);
+    return await repository.getLocation(cep);
   }
 }

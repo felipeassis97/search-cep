@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:search_cep_project/app/core/client/search_cep_client.dart';
+import 'package:search_cep_project/app/core/client/search_cep_client_impl.dart';
 import 'package:search_cep_project/app/modules/home/data/datasource/shared_preferences/shared_datasource_impl.dart';
 import 'package:search_cep_project/app/modules/home/data/repositories/shared_repository_impl.dart';
 import 'package:search_cep_project/app/modules/home/domain/usecase/shared_preferences/shared_usecase.dart';
@@ -11,7 +11,6 @@ import 'domain/repositories/location_details_repository.dart';
 import 'domain/usecase/search_address/search_address_by_cep.dart';
 import 'domain/usecase/search_address/search_address_by_cep_impl.dart';
 import 'domain/usecase/shared_preferences/shared_usecase_impl.dart';
-
 import 'presenter/screens/home_page.dart';
 
 class HomeModule extends Module {
@@ -31,7 +30,8 @@ class HomeModule extends Module {
     Bind((i) => LocationDetailsRepositoryImpl(
         datasource: i<LocationDetailsDatasource>())),
     //Datasource
-    Bind((i) => LocationDetailsDatasourceImpl(client: i<SearchCepClient>())),
+    Bind(
+        (i) => LocationDetailsDatasourceImpl(client: i<SearchCepClientImpl>())),
 
 //Shared Preferences
     //Usecase
