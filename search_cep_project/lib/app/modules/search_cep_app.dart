@@ -13,7 +13,10 @@ class SearchCepApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: AppColors.primaryColor,
           scaffoldBackgroundColor: AppColors.neutralColorHightPure,
-          textTheme: CustomTextTheme.textTheme),
+          textTheme: CustomTextTheme.textTheme,
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: AppColors.primaryColor,
+              )),
       debugShowCheckedModeBanner: false,
     ).modular();
   }

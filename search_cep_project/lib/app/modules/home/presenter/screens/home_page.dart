@@ -9,8 +9,8 @@ import 'package:search_cep_project/app/core/utils/app_colors.dart';
 import 'package:search_cep_project/app/modules/home/domain/entities/location_details_entity.dart';
 import 'package:search_cep_project/app/modules/home/presenter/stores/home_store.dart';
 import 'package:search_cep_project/app/modules/home/presenter/widgets/buttons_componnets.dart';
-import 'package:search_cep_project/app/modules/home/presenter/widgets/dialog_component.dart';
 import 'package:search_cep_project/app/theme/custom_app_bar.dart';
+import 'package:search_cep_project/app/theme/custom_dialog.dart';
 import 'package:search_cep_project/app/theme/custom_progress_indicator.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,10 +34,16 @@ class HomePageState extends State<HomePage> {
     _reactionCep = reaction(
         (_) => store.requestError,
         (_) => store.requestError == true
-            ? DialogComponent(
-                labelButton: 'Fechar',
-                context: context,
-                onPressed: () => Navigator.pop(context)).showAlertDialog()
+            ? CustomDialogComponent(
+                    context: context,
+                    onTapCancel: () {
+                      Navigator.pop(context);
+                    },
+                    titleMessage: "Atenção",
+                    contentMessage:
+                        "Ocorreu um erro.\nVerifique o cep informado e tente novamente.",
+                    textButtonCancel: "Fechar")
+                .showAlertDialog()
             : null);
   }
 
@@ -54,69 +60,104 @@ class HomePageState extends State<HomePage> {
             : Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          _textFieldSearch(),
-                          store.dataAddressByCep != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 16.0),
-                                  child: Column(
-                                    children: [
-                                      _card(store.dataAddressByCep),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 8),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            if (store.dataAddressByCep !=
-                                                null) {
-                                              final result =
-                                                  store.dataAddressByCep;
-
-                                              store.setDataAddressShared
-                                                  .add(result!);
-
-                                              await store.setSharedPreferences(
-                                                  store.setDataAddressShared);
-
-                                              await store
-                                                  .getSharedPreferences();
-                                            }
-                                          },
-                                          child: Row(
-                                            children: const [
-                                              Text("Adicionar aos favoritos",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              SizedBox(width: 8),
-                                              Icon(Icons.add,
-                                                  color: AppColors.primaryColor)
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : _emptyState(),
-                          store.dataAddressByCep != null
-                              ? _text()
-                              : Container(),
-                          _listItems()
-                        ],
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 72),
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        _textFieldSearch(),
+                        store.dataAddressByCep != null
+                            ? Column(
+                                children: [
+                                  _card(store.dataAddressByCep),
+                                  _buttonAddFavorites()
+                                ],
+                              )
+                            : _emptyState(),
+                        _listItems()
+                      ],
                     ),
                   ),
                   _buttonSubmit(),
                 ],
               );
       }),
+    );
+  }
+
+  Widget _labelFavorites() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 16, 8, 4),
+      child: Row(
+        children: const [
+          Text("Favoritos",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          SizedBox(width: 8),
+          Icon(Icons.star_border_outlined, color: AppColors.primaryColor)
+        ],
+      ),
+    );
+  }
+
+  Widget _buttonAddFavorites() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: InkWell(
+        onTap: () async {
+          if (store.dataAddressByCep != null) {
+            await store.getSharedPreferences();
+            var currentAddress = store.dataAddressByCep;
+            store.currentDataAddressShared.add(currentAddress!);
+            await store.setSharedPreferences(store.currentDataAddressShared);
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("Adicionar aos favoritos",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            SizedBox(width: 8),
+            Icon(Icons.add, color: AppColors.primaryColor),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buttonClear() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 16, 8, 4),
+      child: InkWell(
+        onTap: () async {
+          CustomDialogComponent(
+                  context: context,
+                  onTapCancel: () {
+                    Navigator.pop(context);
+                  },
+                  textButtonAccept: "Excluir",
+                  onTapAccept: () async {
+                    await store.clearSharedPreferences();
+                    Navigator.pop(context);
+                  },
+                  titleMessage: "Atenção",
+                  contentMessage:
+                      "Todos os itens serão excluídos.\nVocê deseja realmente excluir?",
+                  textButtonCancel: "Cancelar")
+              .showAlertDialog();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const [
+            Text("Limpar",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            SizedBox(width: 8),
+            Icon(Icons.delete_forever, color: AppColors.primaryColor)
+          ],
+        ),
+      ),
     );
   }
 
@@ -135,46 +176,48 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _text() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 8),
-      child: Row(
-        children: const [
-          Text("Favoritos",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-          SizedBox(width: 8),
-          Icon(Icons.star_border_outlined, color: AppColors.primaryColor)
-        ],
-      ),
-    );
-  }
-
   Widget _listItems() {
-    return store.getDataAddressShared.isNotEmpty
-        ? ListView.builder(
-            scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            primary: false,
-            itemCount: store.getDataAddressShared.length,
-            itemBuilder: (context, i) {
-              final item = i;
-              return Dismissible(
-                background: slideLeftBackground(),
-                secondaryBackground: null,
-                key: Key(item.toString()),
-                onDismissed: (DismissDirection direction) {
-                  if (direction == DismissDirection.startToEnd) {
-                  } else {}
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                  child: _card(store.getDataAddressShared[i]),
+    return Observer(builder: (context) {
+      return store.currentDataAddressShared.isNotEmpty
+          ? Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Divider(thickness: 1),
                 ),
-              );
-            })
-        : _emptyStateFavorites();
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [_labelFavorites(), _buttonClear()]),
+                ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: store.currentDataAddressShared.length,
+                    itemBuilder: (context, i) {
+                      final item = i;
+                      return Column(
+                        children: [
+                          Dismissible(
+                            background: slideLeftBackground(),
+                            secondaryBackground: null,
+                            key: Key(item.toString()),
+                            onDismissed: (DismissDirection direction) {
+                              if (direction == DismissDirection.startToEnd) {
+                              } else {}
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: _card(store.currentDataAddressShared[i]),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+              ],
+            )
+          : _emptyStateFavorites();
+    });
   }
 
   Widget _textFieldSearch() {
@@ -243,67 +286,74 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _card(LocationDetailsEntity? dataAddress) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      color: AppColors.neutralColorHightPure,
-      elevation: 10,
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ListTile(
-            leading: SvgPicture.asset(
-              AppAssets.directionsIllustration,
-              height: 85,
-              width: 85,
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            title: Row(
-              children: [
-                const Icon(Icons.location_city_outlined,
-                    color: AppColors.secondaryColorLight),
-                const Padding(padding: EdgeInsets.only(left: 8)),
-                Text(dataAddress!.cep,
-                    style: Theme.of(context).textTheme.headline6),
-              ],
-            ),
-            subtitle: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.streetview_outlined,
-                        color: AppColors.secondaryColorLight),
-                    const Padding(padding: EdgeInsets.only(left: 8)),
-                    Text(dataAddress.logradouro,
-                        style: Theme.of(context).textTheme.subtitle1),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.location_city_outlined,
-                        color: AppColors.secondaryColorLight),
-                    const Padding(padding: EdgeInsets.only(left: 8)),
-                    Text(dataAddress.bairro,
-                        style: Theme.of(context).textTheme.subtitle1),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.outlined_flag,
-                        color: AppColors.secondaryColorLight),
-                    const Padding(padding: EdgeInsets.only(left: 8)),
-                    Row(
-                      children: [
-                        Text(dataAddress.localidade,
-                            style: Theme.of(context).textTheme.subtitle1),
-                        const Text(", "),
-                        Text(dataAddress.uf,
-                            style: Theme.of(context).textTheme.subtitle1),
-                      ],
-                    ),
-                  ],
+            color: AppColors.neutralColorHightPure,
+            elevation: 6,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ListTile(
+                  leading: SvgPicture.asset(
+                    AppAssets.directionsIllustration,
+                    height: 85,
+                    width: 85,
+                  ),
+                  title: Row(
+                    children: [
+                      const Icon(Icons.location_city_outlined,
+                          color: AppColors.secondaryColorLight),
+                      const Padding(padding: EdgeInsets.only(left: 8)),
+                      Text(dataAddress!.cep,
+                          style: Theme.of(context).textTheme.headline6),
+                    ],
+                  ),
+                  subtitle: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.streetview_outlined,
+                              color: AppColors.secondaryColorLight),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(dataAddress.logradouro,
+                              style: Theme.of(context).textTheme.subtitle1),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_city_outlined,
+                              color: AppColors.secondaryColorLight),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(dataAddress.bairro,
+                              style: Theme.of(context).textTheme.subtitle1),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.outlined_flag,
+                              color: AppColors.secondaryColorLight),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Row(
+                            children: [
+                              Text(dataAddress.localidade,
+                                  style: Theme.of(context).textTheme.subtitle1),
+                              const Text(", "),
+                              Text(dataAddress.uf,
+                                  style: Theme.of(context).textTheme.subtitle1),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -319,7 +369,7 @@ class HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 64),
+          padding: const EdgeInsets.only(top: 32),
           child: SvgPicture.asset(
             AppAssets.addressIllustration,
             height: 80,
@@ -327,7 +377,7 @@ class HomePageState extends State<HomePage> {
           ),
         ),
         const Padding(
-          padding: EdgeInsets.all(32.0),
+          padding: EdgeInsets.all(24.0),
           child: Text(
             "Voce ainda não fez uma busca",
             textAlign: TextAlign.center,

@@ -18,7 +18,7 @@ class CustomTextTheme {
     subtitle2: GoogleFonts.raleway(
         fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
     bodyText1: GoogleFonts.raleway(
-        fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+        fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5),
     bodyText2: GoogleFonts.raleway(
         fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
     button: GoogleFonts.raleway(

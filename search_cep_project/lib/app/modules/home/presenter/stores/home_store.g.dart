@@ -71,20 +71,20 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
-  final _$getDataAddressSharedAtom =
-      Atom(name: '_HomeStoreBase.getDataAddressShared');
+  final _$currentDataAddressSharedAtom =
+      Atom(name: '_HomeStoreBase.currentDataAddressShared');
 
   @override
-  List<LocationDetailsEntity> get getDataAddressShared {
-    _$getDataAddressSharedAtom.reportRead();
-    return super.getDataAddressShared;
+  List<LocationDetailsEntity> get currentDataAddressShared {
+    _$currentDataAddressSharedAtom.reportRead();
+    return super.currentDataAddressShared;
   }
 
   @override
-  set getDataAddressShared(List<LocationDetailsEntity> value) {
-    _$getDataAddressSharedAtom.reportWrite(value, super.getDataAddressShared,
-        () {
-      super.getDataAddressShared = value;
+  set currentDataAddressShared(List<LocationDetailsEntity> value) {
+    _$currentDataAddressSharedAtom
+        .reportWrite(value, super.currentDataAddressShared, () {
+      super.currentDataAddressShared = value;
     });
   }
 
@@ -121,6 +121,15 @@ mixin _$HomeStore on _HomeStoreBase, Store {
         .run(() => super.getSharedPreferences());
   }
 
+  final _$clearSharedPreferencesAsyncAction =
+      AsyncAction('_HomeStoreBase.clearSharedPreferences');
+
+  @override
+  Future<void> clearSharedPreferences() {
+    return _$clearSharedPreferencesAsyncAction
+        .run(() => super.clearSharedPreferences());
+  }
+
   @override
   String toString() {
     return '''
@@ -128,7 +137,7 @@ isLoading: ${isLoading},
 requestError: ${requestError},
 dataAddressByCep: ${dataAddressByCep},
 setDataAddressShared: ${setDataAddressShared},
-getDataAddressShared: ${getDataAddressShared}
+currentDataAddressShared: ${currentDataAddressShared}
     ''';
   }
 }
