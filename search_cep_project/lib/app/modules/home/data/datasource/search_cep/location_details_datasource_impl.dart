@@ -11,7 +11,7 @@ class LocationDetailsDatasourceImpl implements LocationDetailsDatasource {
   LocationDetailsDatasourceImpl({required this.client});
   @override
   Future<LocationDetailsModel> getDetailsLocation(String cep) async {
-    final response = await client.get(SearchCepEndpoint.path(cep));
+    final response = await client.get(SearchCepEndpoint.viacep(cep));
     if (response.statusCode == 200 && response.data != null) {
       return LocationDetailsModel.fromJson(response.data);
     } else {

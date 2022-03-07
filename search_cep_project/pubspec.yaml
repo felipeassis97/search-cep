@@ -23,6 +23,9 @@ dependencies:
   lottie: 1.2.1
   flutter_svg: 1.0.3
   shared_preferences: 2.0.12
+  google_maps_flutter: 2.1.2
+  geolocator: 8.2.0
+  flutter_polyline_points: 1.0.0
   
  
 

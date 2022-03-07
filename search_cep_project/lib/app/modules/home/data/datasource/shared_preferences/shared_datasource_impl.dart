@@ -17,11 +17,11 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
         final List<LocationDetailsModel> _response = [];
         return _response;
       } else {
-        addressData.forEach((addressShared) {
+        for (var addressShared in addressData) {
           final response = jsonDecode(addressShared);
           final response2 = LocationDetailsModel.fromJson(response);
           _items.add(response2);
-        });
+        }
 
         return _items;
       }
@@ -36,10 +36,10 @@ class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
     var _items = <String>[];
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      addressShared.forEach((addressShared) {
+      for (var addressShared in addressShared) {
         final response = jsonEncode(addressShared);
         _items.add(response);
-      });
+      }
       await prefs.setStringList('addressInformation', _items);
       await getDataSharedPreferences();
     } on Exception {

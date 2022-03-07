@@ -88,6 +88,36 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  final _$latitudeAtom = Atom(name: '_HomeStoreBase.latitude');
+
+  @override
+  double get latitude {
+    _$latitudeAtom.reportRead();
+    return super.latitude;
+  }
+
+  @override
+  set latitude(double value) {
+    _$latitudeAtom.reportWrite(value, super.latitude, () {
+      super.latitude = value;
+    });
+  }
+
+  final _$longitudeAtom = Atom(name: '_HomeStoreBase.longitude');
+
+  @override
+  double get longitude {
+    _$longitudeAtom.reportRead();
+    return super.longitude;
+  }
+
+  @override
+  set longitude(double value) {
+    _$longitudeAtom.reportWrite(value, super.longitude, () {
+      super.longitude = value;
+    });
+  }
+
   final _$loadingDurationAsyncAction =
       AsyncAction('_HomeStoreBase.loadingDuration');
 
@@ -101,6 +131,15 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   @override
   Future<void> searchCep(String cep) {
     return _$searchCepAsyncAction.run(() => super.searchCep(cep));
+  }
+
+  final _$getLocationByMapsAsyncAction =
+      AsyncAction('_HomeStoreBase.getLocationByMaps');
+
+  @override
+  Future<void> getLocationByMaps(String place) {
+    return _$getLocationByMapsAsyncAction
+        .run(() => super.getLocationByMaps(place));
   }
 
   final _$setSharedPreferencesAsyncAction =
@@ -130,6 +169,31 @@ mixin _$HomeStore on _HomeStoreBase, Store {
         .run(() => super.clearSharedPreferences());
   }
 
+  final _$_HomeStoreBaseActionController =
+      ActionController(name: '_HomeStoreBase');
+
+  @override
+  void setLatitude(double value) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+        name: '_HomeStoreBase.setLatitude');
+    try {
+      return super.setLatitude(value);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLongitude(double value) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+        name: '_HomeStoreBase.setLongitude');
+    try {
+      return super.setLongitude(value);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -137,7 +201,9 @@ isLoading: ${isLoading},
 requestError: ${requestError},
 dataAddressByCep: ${dataAddressByCep},
 setDataAddressShared: ${setDataAddressShared},
-currentDataAddressShared: ${currentDataAddressShared}
+currentDataAddressShared: ${currentDataAddressShared},
+latitude: ${latitude},
+longitude: ${longitude}
     ''';
   }
 }

@@ -70,6 +70,7 @@ class HomePageState extends State<HomePage> {
                             ? Column(
                                 children: [
                                   _card(store.dataAddressByCep),
+                                  _goToMaps(),
                                   _buttonAddFavorites()
                                 ],
                               )
@@ -126,6 +127,28 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _goToMaps() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+      child: InkWell(
+        onTap: () {
+          Modular.to
+              .navigate('/maps', arguments: store.dataAddressByCep!.logradouro);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("Ver no mapa",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            SizedBox(width: 8),
+            Icon(Icons.place_rounded, color: AppColors.primaryColor),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buttonClear() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 16, 8, 4),
@@ -171,6 +194,7 @@ class HomePageState extends State<HomePage> {
             labelButton: 'Buscar',
             onPressed: () async {
               await store.searchCep(_inpuCep.text);
+              //  await store.actualPosition();
             }),
       ),
     );

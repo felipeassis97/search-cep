@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1077607203222",
+    "project_id": "search-cep-project",
+    "storage_bucket": "search-cep-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077607203222:android:39367a0beafeb1533b5db7",
+        "android_client_info": {
+          "package_name": "com.example.search_cep_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077607203222-m3gt9tdorr1l91gm0e47vk2jpkn8mc56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEYxTFLJtThbB0UCf7ktyofckz6VnGgHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077607203222-m3gt9tdorr1l91gm0e47vk2jpkn8mc56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
