@@ -12,7 +12,17 @@
   <img src="layout-images/favorites.png" width="200">
 </p>
 
-## Architecture
+
+
+## Features
+
+- Listar detalhes de um endereço à partir de um cep
+- Favoritar endereço utilizando o armazenamento local
+- Ver endereço no mapa
+
+
+
+## Arquitetura
 
 Baseado nos conceitos de clean architecture prosposto por Robert C. Martin, a aplicação está dividida em 4 camadas:
 
@@ -23,7 +33,6 @@ Baseado nos conceitos de clean architecture prosposto por Robert C. Martin, a ap
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Flutterando/Clean-Dart/master/imgs/img3.png" width="600">
-
 </p>
 
 
